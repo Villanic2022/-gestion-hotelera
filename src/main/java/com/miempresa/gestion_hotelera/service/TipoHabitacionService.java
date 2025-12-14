@@ -92,6 +92,7 @@ public class TipoHabitacionService {
         entity.setCapacidadBase(request.getCapacidadBase());
         entity.setCapacidadMax(request.getCapacidadMax());
         entity.setActivo(request.getActivo());
+        entity.setPrecioNoche(request.getPrecioNoche());
 
         TipoHabitacion guardado = tipoHabitacionRepository.save(entity);
         return mapper.toResponse(guardado);
