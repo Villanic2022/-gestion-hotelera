@@ -17,6 +17,7 @@ public class TipoHabitacionMapper {
                 .capacidadBase(request.getCapacidadBase())
                 .capacidadMax(request.getCapacidadMax())
                 .activo(request.getActivo())
+                .precioNoche(request.getPrecioNoche())
                 .build();
     }
 
@@ -29,6 +30,7 @@ public class TipoHabitacionMapper {
                 .capacidadBase(entity.getCapacidadBase())
                 .capacidadMax(entity.getCapacidadMax())
                 .activo(entity.getActivo())
+                .precioNoche(entity.getPrecioNoche())
                 .build();
     }
 }

@@ -30,6 +30,7 @@ public class HabitacionMapper {
                 .piso(entity.getPiso())
                 .estado(entity.getEstado())
                 .activo(entity.getActivo())
+                .precioNoche(entity.getTipoHabitacion().getPrecioNoche())
                 .build();
     }
 }
