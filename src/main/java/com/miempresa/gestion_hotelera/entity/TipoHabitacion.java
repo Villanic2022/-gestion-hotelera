@@ -3,6 +3,8 @@ package com.miempresa.gestion_hotelera.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "tipo_habitacion")
 @Getter @Setter
@@ -22,5 +24,6 @@ public class TipoHabitacion {
     private Integer capacidadBase;
     private Integer capacidadMax;
     private Boolean activo;
+    private BigDecimal precioNoche;
 }
 
