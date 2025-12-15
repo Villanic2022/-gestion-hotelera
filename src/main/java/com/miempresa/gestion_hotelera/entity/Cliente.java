@@ -1,5 +1,6 @@
 package com.miempresa.gestion_hotelera.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,9 +20,20 @@ public class Cliente {
     private String email;
     private Boolean activo;
 
-    @OneToMany(mappedBy = "cliente")
+    @Column(length = 20)
+    private String cuit;
+
+    @Column(length = 20)
+    private String condicionIva; // RI, MONOTRIBUTO, EXENTO, CONSUMIDOR_FINAL, etc.
+
+    @Column(length = 255)
+    private String domicilioFiscal;
+
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Usuario> usuarios;
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Hotel> hoteles;
 }

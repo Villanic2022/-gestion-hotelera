@@ -1,5 +1,6 @@
 package com.miempresa.gestion_hotelera.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +12,7 @@ import com.miempresa.gestion_hotelera.entity.EstadoReserva;
 
 @Entity
 @Table(name = "reserva")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor @Builder
 public class Reserva {
