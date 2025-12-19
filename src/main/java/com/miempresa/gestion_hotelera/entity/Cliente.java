@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -28,6 +29,9 @@ public class Cliente {
 
     @Column(length = 255)
     private String domicilioFiscal;
+
+    @Column(name = "suscripcion_hasta")
+    private LocalDate suscripcionHasta;
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     @JsonIgnore
