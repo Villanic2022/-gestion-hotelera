@@ -22,6 +22,7 @@ public class FacturaController {
     private final FacturaService facturaService;
     private final FacturaMapper facturaMapper;
 
+    // POST /api/facturas/emitir
     @PostMapping("/emitir")
     public ResponseEntity<FacturaResponse> emitirFactura(
             @RequestBody FacturaRequest request,
@@ -29,11 +30,10 @@ public class FacturaController {
     ) {
         String username = authentication.getName();
         Factura factura = facturaService.emitirFacturaDesdeReserva(request, username);
-        FacturaResponse response = facturaMapper.toResponse(factura);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(facturaMapper.toResponse(factura));
     }
 
-    // 🧾 1) Listar todas las facturas (con filtros opcionales)
+    // GET /api/facturas?hotelId=&desde=&hasta=
     @GetMapping
     public ResponseEntity<List<FacturaResponse>> listarFacturas(
             Authentication authentication,
@@ -45,13 +45,13 @@ public class FacturaController {
     ) {
         String username = authentication.getName();
         List<Factura> facturas = facturaService.listarFacturas(username, hotelId, desde, hasta);
-        List<FacturaResponse> response = facturas.stream()
+        List<FacturaResponse> dtos = facturas.stream()
                 .map(facturaMapper::toResponse)
                 .toList();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(dtos);
     }
 
-    // 🧾 2) Obtener factura por reserva
+    // GET /api/facturas/reserva/{reservaId}
     @GetMapping("/reserva/{reservaId}")
     public ResponseEntity<FacturaResponse> obtenerPorReserva(
             @PathVariable Long reservaId,
@@ -59,11 +59,10 @@ public class FacturaController {
     ) {
         String username = authentication.getName();
         Factura factura = facturaService.obtenerFacturaPorReserva(reservaId, username);
-        FacturaResponse response = facturaMapper.toResponse(factura);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(facturaMapper.toResponse(factura));
     }
 
-    // 🧾 3) Obtener factura por ID
+    // GET /api/facturas/{id}
     @GetMapping("/{id}")
     public ResponseEntity<FacturaResponse> obtenerPorId(
             @PathVariable Long id,
@@ -71,7 +70,6 @@ public class FacturaController {
     ) {
         String username = authentication.getName();
         Factura factura = facturaService.obtenerFacturaPorId(id, username);
-        FacturaResponse response = facturaMapper.toResponse(factura);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(facturaMapper.toResponse(factura));
     }
 }

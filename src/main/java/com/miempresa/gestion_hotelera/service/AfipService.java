@@ -35,6 +35,7 @@ public class AfipService {
         private BigDecimal importe;
         private String tipoDocReceptor;   // "80", "96", "99"
         private String nroDocReceptor;
+        private String nombreReceptor;    // 👈 AGREGAR ESTA LÍNEA
     }
 
     @Getter

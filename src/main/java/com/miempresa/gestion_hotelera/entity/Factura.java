@@ -49,7 +49,10 @@ public class Factura {
 
     @Column(nullable = false)
     private String tipoDocumentoReceptor; // "CUIT", "DNI", etc
-
+    
+    @Column
+    private String receptorNombre; // Nombre completo del receptor
+    
     @Column(nullable = false)
     private LocalDateTime fechaEmision;
 

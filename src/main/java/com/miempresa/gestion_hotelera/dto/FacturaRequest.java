@@ -14,4 +14,5 @@ public class FacturaRequest {
     private String tipoDocumento;     // "DNI" o "CUIT"
     private String documento;         // nro
     private BigDecimal importe;       // si no lo mandás, se puede tomar de la reserva
+    private String clienteNombre;
 }

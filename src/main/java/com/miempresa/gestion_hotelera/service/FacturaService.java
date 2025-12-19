@@ -71,6 +71,7 @@ public class FacturaService {
                 .moneda("PES")                                          // código AFIP para pesos
                 .importe(importe)
                 .tipoDocReceptor(mapTipoDoc(request.getTipoDocumento())) // "80"/"96"/"99"
+                .nombreReceptor(request.getClienteNombre()) // 👈 AGREGAR ESTA LÍNEA
                 .nroDocReceptor(request.getDocumento())
                 .build();
 
@@ -99,6 +100,7 @@ public class FacturaService {
                 .cuitEmisor(cliente.getCuit())
                 .tipoDocumentoReceptor(request.getTipoDocumento())
                 .documentoReceptor(request.getDocumento())
+                .receptorNombre(request.getClienteNombre()) // 👈 Nuevo campo
                 .fechaEmision(LocalDateTime.now())
                 .importeTotal(importe)
                 .moneda("ARS")
@@ -136,7 +138,7 @@ public class FacturaService {
                 : LocalDateTime.of(2100, 12, 31, 23, 59, 59);
 
         List<Factura> facturas = facturaRepository
-                .findByClienteIdAndFechaEmisionBetween(
+                .findByClienteIdAndFechaEmisionBetweenWithFetch(
                         cliente.getId(),
                         desdeDateTime,
                         hastaDateTime
@@ -169,7 +171,7 @@ public class FacturaService {
                     HttpStatus.BAD_REQUEST, "El usuario no tiene cliente asociado");
         }
 
-        Factura factura = facturaRepository.findFirstByReservaId(reservaId)
+        Factura factura = facturaRepository.findFirstByReservaIdWithFetch(reservaId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "No existe factura para la reserva " + reservaId));
 
@@ -197,7 +199,7 @@ public class FacturaService {
                     HttpStatus.BAD_REQUEST, "El usuario no tiene cliente asociado");
         }
 
-        Factura factura = facturaRepository.findById(facturaId)
+        Factura factura = facturaRepository.findByIdWithFetch(facturaId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Factura no encontrada"));
 
