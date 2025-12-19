@@ -44,6 +44,7 @@ public class AuthService {
 
     // ==================== LOGIN ====================
 
+    @Transactional(readOnly = true)
     public JwtResponse login(LoginRequest request) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -56,8 +57,8 @@ public class AuthService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
 
-        // Buscar Usuario en nuestra base
-        Usuario usuario = usuarioRepository.findByUsuario(username)
+        // Buscar Usuario en nuestra base con el cliente cargado
+        Usuario usuario = usuarioRepository.findByUsuarioWithCliente(username)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.UNAUTHORIZED, "Usuario no encontrado"));
 
@@ -107,6 +108,7 @@ public class AuthService {
 
     // ==================== REGISTER ====================
 
+    @Transactional
     public JwtResponse register(RegisterRequest request) {
 
         if (usuarioRepository.existsByUsuario(request.getUsuario())) {
@@ -149,6 +151,7 @@ public class AuthService {
 
     // ==================== FORGOT PASSWORD ====================
 
+    @Transactional
     public void forgotPassword(ForgotPasswordRequest request) {
         Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(
