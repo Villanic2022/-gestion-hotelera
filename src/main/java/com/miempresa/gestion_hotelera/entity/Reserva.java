@@ -72,4 +72,9 @@ public class Reserva {
 
     @Column(name = "actualizado_en")
     private LocalDateTime actualizadoEn;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "huesped_titular_id")
+    private Huesped huespedTitular;
+
 }
