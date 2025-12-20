@@ -62,7 +62,15 @@ public class FacturaService {
                 ? request.getImporte()
                 : reserva.getPrecioTotal(); // ya es BigDecimal
 
-        // 3) Armamos el "request AFIP" (para futuro AFIP real)
+        // 3) Validar que el cliente tenga CUIT configurado
+        if (cliente.getCuit() == null || cliente.getCuit().trim().isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, 
+                    "Para emitir facturas, debes configurar el CUIT de tu empresa en el perfil del cliente. Contactá al administrador."
+            );
+        }
+
+        // 3.1) Armamos el "request AFIP" (para futuro AFIP real)
         AfipService.AfipFacturaRequest afipReq = AfipService.AfipFacturaRequest.builder()
                 .cuitEmisor(cliente.getCuit())
                 .puntoVenta(request.getPuntoVenta())

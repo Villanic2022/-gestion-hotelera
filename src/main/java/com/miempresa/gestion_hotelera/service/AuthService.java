@@ -115,13 +115,29 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El usuario ya existe");
         }
 
+        // Validaciones de campos fiscales
+        if (request.getCuit() == null || request.getCuit().trim().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El CUIT es obligatorio");
+        }
+        
+        if (request.getCondicionIva() == null || request.getCondicionIva().trim().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La condición de IVA es obligatoria");
+        }
+        
+        if (request.getDomicilioFiscal() == null || request.getDomicilioFiscal().trim().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El domicilio fiscal es obligatorio");
+        }
+
         Rol rolBase = rolRepository.findByNombre("RECEPCION")
                 .orElseThrow(() -> new RuntimeException("Rol RECEPCION no encontrado"));
 
         // nuevo cliente para este usuario
         Cliente cliente = Cliente.builder()
-                .nombre(request.getNombre() + " " + request.getApellido())
+                .nombre(request.getNombreEmpresa() != null ? request.getNombreEmpresa() : request.getNombre() + " " + request.getApellido())
                 .email(request.getEmail())
+                .cuit(request.getCuit())
+                .condicionIva(request.getCondicionIva())
+                .domicilioFiscal(request.getDomicilioFiscal())
                 .activo(true)
                 // Suscripción inicial: por ejemplo, 30 días desde hoy (podés ajustarlo o dejar null)
                 .suscripcionHasta(LocalDate.now().plusDays(30))
