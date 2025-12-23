@@ -8,6 +8,7 @@ import com.miempresa.gestion_hotelera.service.FacturaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +23,9 @@ public class FacturaController {
     private final FacturaService facturaService;
     private final FacturaMapper facturaMapper;
 
-    // POST /api/facturas/emitir
+    // POST /api/facturas/emitir - SOLO ADMIN
     @PostMapping("/emitir")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<FacturaResponse> emitirFactura(
             @RequestBody FacturaRequest request,
             Authentication authentication
@@ -33,8 +35,9 @@ public class FacturaController {
         return ResponseEntity.ok(facturaMapper.toResponse(factura));
     }
 
-    // GET /api/facturas?hotelId=&desde=&hasta=
+    // GET /api/facturas?hotelId=&desde=&hasta= - SOLO ADMIN
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<FacturaResponse>> listarFacturas(
             Authentication authentication,
             @RequestParam(required = false) Long hotelId,
@@ -51,8 +54,9 @@ public class FacturaController {
         return ResponseEntity.ok(dtos);
     }
 
-    // GET /api/facturas/reserva/{reservaId}
+    // GET /api/facturas/reserva/{reservaId} - SOLO ADMIN
     @GetMapping("/reserva/{reservaId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<FacturaResponse> obtenerPorReserva(
             @PathVariable Long reservaId,
             Authentication authentication
@@ -62,8 +66,9 @@ public class FacturaController {
         return ResponseEntity.ok(facturaMapper.toResponse(factura));
     }
 
-    // GET /api/facturas/{id}
+    // GET /api/facturas/{id} - SOLO ADMIN
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<FacturaResponse> obtenerPorId(
             @PathVariable Long id,
             Authentication authentication
